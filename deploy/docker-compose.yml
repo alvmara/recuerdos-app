@@ -1,0 +1,23 @@
+version: '3.9'
+services:
+  # Servicio de base de datos
+  database:
+    image: postgres:12.10-alpine
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+    ports:
+      - 5432:5432
+    restart: always
+
+  # Servicio de aplicación frontend
+  frontend:
+    image: recuerdos-app-frontend:1.0
+    ports:
+      - 80:80
+  # Servicio de aplicación backend
+  # backend:
+  #   image: recuerdos-app-backend:1.0
+  #   ports:
+  #     - 8080:8080
