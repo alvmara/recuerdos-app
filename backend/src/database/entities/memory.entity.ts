@@ -1,7 +1,15 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
+interface IComment {
+    id: string,
+    userName: string,
+    userPhoto: string,
+    comment: string,
+    date: string,
+}
+
 @Entity()
-export class User {
+export class Memory {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
@@ -34,5 +42,5 @@ export class User {
         default: () => "'[]'",
         nullable: false,
     })
-    comments: Array<string>;
+    comments: Array<IComment>;
 }
