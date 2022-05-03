@@ -4,10 +4,10 @@ import { ArrowLeft, ArrowRight } from '@mui/icons-material';
 import { Carousel } from 'react-responsive-carousel';
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 
-const MemoryImagesCarousel = () => {
+const MemoryImagesCarousel = ({ images }) => {
     const arrowStyles = {
         position: 'absolute',
-        zIndex: 99999999,
+        zIndex: 2,
         top: 'calc(50% - 15px)'
     };
 
@@ -33,7 +33,7 @@ const MemoryImagesCarousel = () => {
             showIndicators={false}
             statusFormatter={() => null}
         >
-            {[1, 2, 3, 4].map(i => <img key={i} src={`https://picsum.photos/id/${i}/1000/500`} alt="Image" />)}
+            {images.map(image => <img key={image} src={image} alt={image} />)}
         </Carousel>
     );
 };

@@ -19,7 +19,16 @@ import MemoryImagesCarousel from './MemoryImagesCarousel';
 //     expand: boolean;
 // }
 
-export default function RecipeReviewCard() {
+export default function RecipeReviewCard({
+    id,
+    title,
+    description,
+    ownerName,
+    ownerId,
+    images,
+    date,
+    comments
+}) {
     const [expanded, setExpanded] = React.useState(false);
 
     const handleExpandClick = () => {
@@ -31,22 +40,20 @@ export default function RecipeReviewCard() {
             <CardHeader
                 avatar={
                     <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                        R
+                        {ownerName.charAt(0).toUpperCase()}
                     </Avatar>
                 }
-                title="Shrimp and Chorizo Paella"
-                subheader="September 14, 2016"
+                title={title}
+                subheader={date.toLocaleString()}
             />
 
-            <Box sx={{ height: 'min(30vh, 300px)' }}>
-                <MemoryImagesCarousel />
+            <Box>
+                <MemoryImagesCarousel images={images} />
             </Box>
 
             <CardContent>
                 <Typography variant="body2" color="text.secondary">
-                    This impressive paella is a perfect party dish and a fun meal to cook
-                    together with your guests. Add 1 cup of frozen peas along with the mussels,
-                    if you like.
+                    {description}
                 </Typography>
             </CardContent>
 
@@ -68,7 +75,7 @@ export default function RecipeReviewCard() {
 
             <Collapse in={expanded} timeout="auto" unmountOnExit>
                 <CardContent>
-                    <CommentsList />
+                    <CommentsList comments={comments} />
                 </CardContent>
             </Collapse>
 
