@@ -11,6 +11,8 @@ const MemoryImagesCarousel = ({ images }) => {
         top: 'calc(50% - 15px)'
     };
 
+    console.log({ images });
+
 
     return (
         <Carousel

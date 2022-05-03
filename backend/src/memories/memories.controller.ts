@@ -50,7 +50,7 @@ export class MemoriesController {
         })
     )
     async uploadedFile(@UploadedFiles() files) {
-        return files.map(file => file.filename);
+        return files.map(file => `http://localhost:3000/memories/uploaded/${file.filename}`);
     }
 
 

@@ -3,6 +3,7 @@ import { Avatar, Box, Button, Card, CardActions, CardContent, CardHeader, Modal,
 import { red } from '@mui/material/colors';
 import React, { useEffect } from 'react'
 import { useDropzone } from 'react-dropzone';
+import { uploadImages } from '../../../api/memories';
 import MemoryImagesCarousel from '../MemoryCard/MemoryImagesCarousel';
 import { style, styleDropzone } from './styles';
 
@@ -20,7 +21,12 @@ function MemoryFormModal({ open, onClose }) {
     const [images, setImages] = React.useState([]);
 
     useEffect(() => {
-        setImages(acceptedFiles.map((file) => URL.createObjectURL(file)));
+        if (acceptedFiles.length === 0) return;
+
+        uploadImages(acceptedFiles).then(imageUrls => {
+            console.log(imageUrls);
+            setImages(imageUrls || []);
+        });
     }, [acceptedFiles]);
 
 
