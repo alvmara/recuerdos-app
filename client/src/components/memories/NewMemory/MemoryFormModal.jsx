@@ -3,7 +3,7 @@ import { Avatar, Box, Button, Card, CardActions, CardContent, CardHeader, Modal,
 import { red } from '@mui/material/colors';
 import React, { useEffect } from 'react'
 import { useDropzone } from 'react-dropzone';
-import { uploadImages } from '../../../api/memories';
+import { createMemory, uploadImages } from '../../../api/memories';
 import MemoryImagesCarousel from '../MemoryCard/MemoryImagesCarousel';
 import { style, styleDropzone } from './styles';
 
@@ -19,19 +19,24 @@ function MemoryFormModal({ open, onClose }) {
     } = useDropzone({ accept: { 'image/*': [] } });
 
     const [images, setImages] = React.useState([]);
+    const [memory, setMemory] = React.useState({});
+
+    const updateMemory = (prop, value) => setMemory({ ...memory, [prop]: value });
 
     useEffect(() => {
         if (acceptedFiles.length === 0) return;
 
         uploadImages(acceptedFiles).then(imageUrls => {
-            console.log(imageUrls);
             setImages(imageUrls || []);
+            updateMemory('images', imageUrls);
         });
     }, [acceptedFiles]);
 
+    useEffect(() => console.log(memory), [memory]);
 
-    const createMemory = () => {
-        // TODO
+    const persistMemory = () => {
+        console.log('persistMemory', memory);
+        createMemory(memory);
     };
 
     return (
@@ -57,6 +62,8 @@ function MemoryFormModal({ open, onClose }) {
                                 label="Title"
                                 fullWidth
                                 variant="standard"
+                                value={memory.title}
+                                onChange={e => updateMemory('title', e.target.value)}
                             />
                         }
                         subheader={new Date().toLocaleString()}
@@ -82,11 +89,13 @@ function MemoryFormModal({ open, onClose }) {
                             fullWidth
                             rows={4}
                             variant="standard"
+                            value={memory.description}
+                            onChange={e => updateMemory('description', e.target.value)}
                         />
                     </CardContent>
 
                     <CardActions>
-                        <Button onClick={() => createMemory()} endIcon={<Send />} variant="contained" disableElevation>
+                        <Button onClick={() => persistMemory()} endIcon={<Send />} variant="contained" disableElevation>
                             Crear
                         </Button>
                     </CardActions>

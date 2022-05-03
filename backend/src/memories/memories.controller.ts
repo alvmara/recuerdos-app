@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Post, Query, Res, UploadedFiles, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query, Req, Res, UploadedFiles, UseGuards, UseInterceptors } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 import { Memory } from 'src/database/entities/memory.entity';
@@ -6,6 +6,8 @@ import { MemoriesService } from './memories.service';
 
 import { diskStorage } from 'multer';
 import { extname } from 'path';
+import { request } from 'http';
+import { User } from 'src/database/entities/user.entity';
 
 @Controller('memories')
 export class MemoriesController {
@@ -21,7 +23,15 @@ export class MemoriesController {
 
     @UseGuards(JwtAuthGuard)
     @Post('create')
-    createMemory(memory: Partial<Memory>) {
+    createMemory(@Req() request, @Body() memory: Partial<Memory>) {
+        const user: User = request.user;
+
+        console.log(request.user);
+
+        memory.ownerId = user.id;
+        memory.ownerName = user.userName;
+        memory.date = new Date().toISOString();
+
         return this.memoryService.createMemory(memory as Memory)
     }
 

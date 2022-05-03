@@ -24,12 +24,10 @@ export class AuthService {
                 throw new Error('User not found');
             }
 
-            let token = `${userData.userName}${userData.id}`;
-            const accessToken = this.jwtService.sign(token);
+            const accessToken = this.jwtService.sign(JSON.stringify(userData));
 
             return {
-                accessToken,
-                token: token
+                accessToken
             };
         });
     }

@@ -1,3 +1,5 @@
+// TODO: add token from localStorage or redux
+const token = 'eyJhbGciOiJIUzI1NiJ9.eyJpZCI6ImY0ODNjMTA2LTdkNmEtNDBjYi1hYjA4LTJkNmMwZjJjYTc0ZCIsImVtYWlsIjoiZWx0aW92YXJpQGppbWFpbC5jb20iLCJ1c2VyTmFtZSI6ImVsdGlvdmFyaSIsInBhc3N3b3JkIjoiMTIzNCJ9.lWpJXHX75rk9iyBGltTdvaCFx8rQ1LYXOYCrWYwPEUw';
 
 
 export const listMemories = (page = 1) => {
@@ -11,14 +13,19 @@ export const uploadImages = (images) => {
         formData.append('images', image);
     });
     
-    console.log('Fetch upload images')
-
-    const token = 'eyJhbGciOiJIUzI1NiJ9.ZWx0aW92YXJpZjQ4M2MxMDYtN2Q2YS00MGNiLWFiMDgtMmQ2YzBmMmNhNzRk.8SH07sXV1f3ThIc5IqUE_lAuURy86rX4fxIbdEVU6Tw';
 
     return fetch(`http://localhost:3000/memories/images/upload`, {
         method: 'POST',
         body: formData,
         headers: { 'Authorization': `Bearer ${token}` }
     }).then(res => res.json());
-
 }
+
+
+export const createMemory = (memory) => {
+    return fetch(`http://localhost:3000/memories/create`, {
+        method: 'POST',
+        body: JSON.stringify(memory),
+        headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }
+    }).then(res => res.json());  
+};
