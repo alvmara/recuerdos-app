@@ -30,4 +30,9 @@ export class MemoriesService {
         });
     }
 
+
+    createMemory(memory: Memory) {
+        return 'Hello world!';
+    }
+
 }
