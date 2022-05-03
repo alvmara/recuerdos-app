@@ -11,6 +11,7 @@ import Menu from '@mui/material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import MoreIcon from '@mui/icons-material/MoreVert';
+import { AddCircle } from '@mui/icons-material';
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -54,7 +55,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 
 // El componente NavigationBar es una barra de navegación que se muestra en todas las páginas
-export default function PrimarySearchAppBar() {
+export default function PrimarySearchAppBar({ onClickCreate }) {
     // Controlar estado de los menús
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
@@ -139,6 +140,10 @@ export default function PrimarySearchAppBar() {
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static">
                 <Toolbar>
+                    <IconButton onClick={() => onClickCreate()}>
+                        <AddCircle />
+                    </IconButton>
+
                     <Typography
                         variant="h6"
                         noWrap

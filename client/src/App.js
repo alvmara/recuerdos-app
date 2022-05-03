@@ -6,11 +6,18 @@ import './App.css';
 import { Container } from '@mui/material';
 import Profile from './views/user/Profile';
 import AuthPanel from './components/auth/AuthPanel';
+import MemoryFormModal from './components/memories/NewMemory/MemoryFormModal';
+import { useState } from 'react';
 
 function App() {
+  const [newMemoryFormOpened, setNewMemoryFormOpened] = useState(false);
+
   return (
     <div className="App">
-      <NavigationBar></NavigationBar>
+      <NavigationBar onClickCreate={() => setNewMemoryFormOpened(true)}></NavigationBar>
+
+
+      <MemoryFormModal open={newMemoryFormOpened} onClose={() => setNewMemoryFormOpened(false) } />
 
       <Container>
         <Routes>
