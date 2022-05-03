@@ -15,9 +15,9 @@ export class MemoriesService {
     constructor(
         @InjectRepository(Memory)
         private readonly memoryRepository: Repository<Memory>,
-        private readonly memoriesSeeder: MemoriesSeederService
+        // private readonly memoriesSeeder: MemoriesSeederService
     ) {
-        this.memoriesSeeder.create();
+        // this.memoriesSeeder.create();
     }
 
     listMemories(config: ListMemoriesConfig) {
