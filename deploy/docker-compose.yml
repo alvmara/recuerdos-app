@@ -16,8 +16,22 @@ services:
     image: recuerdos-app-frontend:1.0
     ports:
       - 80:80
+
   # Servicio de aplicación backend
   # backend:
   #   image: recuerdos-app-backend:1.0
   #   ports:
   #     - 8080:8080
+
+  # My grafana service
+  # Panel de administración de grafana 
+  grafana:
+    image: grafana/grafana:7.1.5-ubuntu
+    ports:
+      - 9000:3000
+    volumes:
+      - grafana-data:/var/lib/grafana
+# Explicitly define the persistent volume for your data storage
+volumes:
+  grafana-data:
+    external: true
