@@ -3,6 +3,9 @@ import { UsersService } from 'src/users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { User } from 'src/database/entities/user.entity';
 
+const bcrypt = require("bcrypt");
+
+
 @Injectable()
 export class AuthService {
     constructor(
@@ -11,11 +14,17 @@ export class AuthService {
     ) {
     }
 
-    validate(emailOrUsername: string, password: string): Promise<User> {
-        return this.userService.findBy([
+    async validate(emailOrUsername: string, password: string): Promise<boolean> {
+        // TODO: Validar que las contraseñas coincidan
+
+        const user = await this.userService.findBy([
             { email: emailOrUsername },
             { userName: emailOrUsername }
         ]);
+
+        if (!user) return false;
+
+        return bcrypt.compare(password, user.password);
     }
 
     public async login(emailOrUsername: string, password: string): Promise<any> {
@@ -33,7 +42,13 @@ export class AuthService {
         });
     }
 
-    public async register(user: User): Promise<any> {
-        return this.userService.create(user)
+    public async register(registerData: { userName, email, password }): Promise<any> {
+        const user = {
+            userName: registerData.userName,
+            email: registerData.email,
+            password: registerData.password
+        } as User;
+
+        return this.userService.create(user);
     }
 }

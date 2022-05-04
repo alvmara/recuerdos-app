@@ -25,7 +25,6 @@ export default function BasicGrid({ theme }) {
 
         dispatch({
             type: 'SET_MEMORIES',
-            // TODO: Revisar
             memories: updatedMemories
         });
     }

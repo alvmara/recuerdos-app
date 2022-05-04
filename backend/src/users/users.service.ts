@@ -19,7 +19,7 @@ export class UsersService {
     }
 
     create(user: User): Promise<User> {
-        return this.userRepository.save(user);
+        return this.userRepository.save(Object.assign(new User(), user));
     }
 
     profile() {

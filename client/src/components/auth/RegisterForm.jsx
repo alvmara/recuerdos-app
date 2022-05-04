@@ -36,6 +36,16 @@ function RegisterForm() {
                     variant="filled"
                 />
             </div>
+
+            <div>
+                <TextField
+                    id="filled-password-input"
+                    label="Repetir contraseña"
+                    type="password"
+                    autoComplete="current-password"
+                    variant="filled"
+                />
+            </div>
         </Box>
     )
 }

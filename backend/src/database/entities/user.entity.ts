@@ -1,5 +1,8 @@
-import { Entity, Column, PrimaryGeneratedColumn, BeforeInsert, Unique } from 'typeorm';
-import crypto from 'crypto';
+const bcrypt = require('bcrypt');
+
+import configuration from '../../auth/configuration';
+import { Entity, Column, PrimaryGeneratedColumn, BeforeInsert, Unique, BeforeUpdate } from 'typeorm';
+
 
 @Entity()
 export class User {
@@ -15,8 +18,12 @@ export class User {
     userName: string;
 
     @BeforeInsert()
+    @BeforeUpdate()
     public hashPassword() {
-        this.password = crypto.createHmac('sha256', this.password).digest('hex');
+        const { salt } = configuration.crypto;
+
+        // Hashing user's salt and password with 1000 iterations, 64 length and sha512 digest
+        this.password = bcrypt.hashSync(this.password, salt);
     }
 
     @Column()
