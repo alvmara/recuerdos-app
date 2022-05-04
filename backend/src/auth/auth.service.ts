@@ -47,6 +47,13 @@ export class AuthService {
             password: registerData.password
         } as User;
 
-        return this.userService.create(user);
+        const createdUser = this.userService.create(user);
+
+        const accessToken = this.jwtService.sign(JSON.stringify(createdUser));
+
+        return {
+            accessToken,
+            user: createdUser
+        }
     }
 }

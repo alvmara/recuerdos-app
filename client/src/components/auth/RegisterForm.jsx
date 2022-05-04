@@ -2,10 +2,12 @@ import { Send } from '@mui/icons-material';
 import { Box, Button, TextField } from '@mui/material'
 import React, { useState } from 'react'
 import { registerUser } from '../../api/auth';
+import { useDispatch } from 'react-redux';
 
 function RegisterForm() {
     const [formData, setFormData] = useState({});
     const [repeatPassword, setRepeatPassword] = useState('');
+    const dispatch = useDispatch();
 
     const updateFormData = (key, value) => setFormData({ ...formData, [key]: value });
 
@@ -20,7 +22,9 @@ function RegisterForm() {
         }
 
         registerUser({ email, userName, password })
-            .then(console.log);
+            .then(({ accessToken, user }) => {
+                dispatch({ type: 'SET_AUTH', payload: { accessToken, user } });
+            });
     }
 
     return (
