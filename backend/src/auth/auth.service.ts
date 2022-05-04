@@ -14,30 +14,30 @@ export class AuthService {
     ) {
     }
 
-    async validate(emailOrUsername: string, password: string): Promise<boolean> {
+    async validate(emailOrUsername: string, password: string): Promise<User | null> {
         const user = await this.userService.findBy([
             { email: emailOrUsername },
             { userName: emailOrUsername }
         ]);
 
-        if (!user) return false;
+        if (!user) return null;
 
-        return bcrypt.compare(password, user.password);
+        return bcrypt.compare(password, user.password) ? user : null;
     }
 
     public async login(emailOrUsername: string, password: string): Promise<any> {
-        return this.validate(emailOrUsername, password).then((userData) => {
-            if (!userData) {
-                throw new ForbiddenException();
-            }
+        const userData = await this.validate(emailOrUsername, password);
 
-            const accessToken = this.jwtService.sign(JSON.stringify(userData));
+        if (!userData) {
+            throw new ForbiddenException();
+        }
 
-            return {
-                accessToken,
-                user: userData
-            };
-        });
+        const accessToken = this.jwtService.sign(JSON.stringify(userData));
+
+        return {
+            accessToken,
+            user: userData
+        };
     }
 
     public async register(registerData: { userName, email, password }): Promise<any> {
