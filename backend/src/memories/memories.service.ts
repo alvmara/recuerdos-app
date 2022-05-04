@@ -2,7 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Memory } from '../database/entities/memory.entity';
 import { Repository } from 'typeorm';
-import { MemoriesSeederService } from 'src/database/seeders/memory.seeder';
+
+import { Like } from "typeorm";
+
+// import { MemoriesSeederService } from 'src/database/seeders/memory.seeder';
 
 interface ListMemoriesConfig {
     page: number;
@@ -11,6 +14,7 @@ interface ListMemoriesConfig {
 
 @Injectable()
 export class MemoriesService {
+
     constructor(
         @InjectRepository(Memory)
         private readonly memoryRepository: Repository<Memory>,
@@ -47,4 +51,25 @@ export class MemoriesService {
         return memory;
     }
 
+
+    search({ searchText, page }: { searchText: string, page: number }) {
+        return this.memoryRepository.find({
+            skip: (page - 1) * 50,
+            take: 50,
+            order: {
+                date: 'DESC'
+            },
+
+            where: [
+                {
+                    title: Like(`%${searchText}%`)
+                },
+                {
+                    description: Like(`%${searchText}%`)
+                }
+            ],
+
+
+        });
+    }
 }

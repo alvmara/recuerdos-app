@@ -35,3 +35,10 @@ export const createComment = (memoryId, comment, { token}) => {
     }).then(res => res.json()).catch(console.error);
 }
 
+export const search = ({ searchText, page = 1}, { token }) => {
+    return fetch(`http://localhost:3000/memories/search`, {
+        method: 'POST',
+        body: JSON.stringify({ searchText, page }),
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }
+    }).then(res => res.json()).catch(console.error);
+}

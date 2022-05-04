@@ -87,5 +87,10 @@ export class MemoriesController {
 
         return this.memoryService.updateMemory(memory.id, { comments: memory.comments });
     }
+
+    @Post('search')
+    async search(@Body() options: { searchText: string, page: number }) {
+        return this.memoryService.search(options);
+    }
 }
 

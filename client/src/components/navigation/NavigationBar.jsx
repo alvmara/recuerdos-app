@@ -9,6 +9,7 @@ import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
 import { AddCircle } from '@mui/icons-material';
 import { useSelector } from 'react-redux';
+import debounce from 'lodash/debounce';
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -55,6 +56,10 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export default function PrimarySearchAppBar({ onClickCreate }) {
     const isLoggedIn = useSelector(state => state.credentials.accessToken !== null);
 
+    const searchMemories = React.useCallback(debounce(() => {
+        console.log('searching');
+    }, 400));
+
     return (
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static">
@@ -74,7 +79,7 @@ export default function PrimarySearchAppBar({ onClickCreate }) {
                         Recuerdos App
                     </Typography>
 
-                    <Search>
+                    <Search onChange={searchMemories}>
                         <SearchIconWrapper>
                             <SearchIcon />
                         </SearchIconWrapper>
