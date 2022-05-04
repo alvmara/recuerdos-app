@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { User } from 'src/database/entities/user.entity';
@@ -15,8 +15,6 @@ export class AuthService {
     }
 
     async validate(emailOrUsername: string, password: string): Promise<boolean> {
-        // TODO: Validar que las contraseñas coincidan
-
         const user = await this.userService.findBy([
             { email: emailOrUsername },
             { userName: emailOrUsername }
@@ -30,7 +28,7 @@ export class AuthService {
     public async login(emailOrUsername: string, password: string): Promise<any> {
         return this.validate(emailOrUsername, password).then((userData) => {
             if (!userData) {
-                throw new Error('User not found');
+                throw new ForbiddenException();
             }
 
             const accessToken = this.jwtService.sign(JSON.stringify(userData));
