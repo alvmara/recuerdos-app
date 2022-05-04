@@ -1,14 +1,14 @@
 import { Send } from '@mui/icons-material';
 import { Avatar, Box, Button, Card, CardActions, CardContent, CardHeader, Modal, TextField } from '@mui/material'
 import { red } from '@mui/material/colors';
-import React, { useEffect } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { useDropzone } from 'react-dropzone';
 import { createMemory, uploadImages } from '../../../api/memories';
 import MemoryImagesCarousel from '../MemoryCard/MemoryImagesCarousel';
 import { style, styleDropzone } from './styles';
 
 
-function MemoryFormModal({ open, onClose }) {
+function MemoryFormModal({ open, onClose, addMemory }) {
     const {
         acceptedFiles,
         getRootProps,
@@ -21,7 +21,7 @@ function MemoryFormModal({ open, onClose }) {
     const [images, setImages] = React.useState([]);
     const [memory, setMemory] = React.useState({});
 
-    const updateMemory = (prop, value) => setMemory({ ...memory, [prop]: value });
+    const updateMemory = useCallback((prop, value) => setMemory({ ...memory, [prop]: value }), [setMemory, memory]);
 
     useEffect(() => {
         if (acceptedFiles.length === 0) return;
@@ -32,11 +32,10 @@ function MemoryFormModal({ open, onClose }) {
         });
     }, [acceptedFiles]);
 
-    useEffect(() => console.log(memory), [memory]);
 
     const persistMemory = () => {
-        console.log('persistMemory', memory);
-        createMemory(memory);
+        createMemory(memory)
+            .then(memory => addMemory(memory));
     };
 
     return (

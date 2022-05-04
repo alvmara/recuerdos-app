@@ -41,8 +41,10 @@ export class MemoriesService {
         return this.memoryRepository.save(memory);
     }
 
-    updateMemory(id: string, memory: Partial<Memory>) {
-        return this.memoryRepository.update(id, memory);
+    async updateMemory(id: string, memory: Partial<Memory>) {
+        await this.memoryRepository.update(id, memory);
+
+        return memory;
     }
 
 }

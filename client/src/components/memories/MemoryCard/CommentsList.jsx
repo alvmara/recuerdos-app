@@ -12,14 +12,13 @@ export default function AlignItemsList({ comments }) {
         <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
             {comments.map(({
                 id,
-                userName,
-                userPhoto,
+                ownerName,
                 comment,
                 date,
             }, index) => <>
                     <ListItem key={id} alignItems="flex-start">
                         <ListItemAvatar>
-                            <Avatar alt={userName} src={userPhoto} />
+                            <Avatar alt={ownerName} >{ownerName.charAt(0).toUpperCase()}</Avatar>
                         </ListItemAvatar>
                         <ListItemText
                             secondary={
@@ -30,9 +29,12 @@ export default function AlignItemsList({ comments }) {
                                         variant="body2"
                                         color="text.primary"
                                     >
-                                        {userName}
+                                        {ownerName}
                                     </Typography>
-                                    {comment}
+
+                                    <Typography>
+                                        {comment}
+                                    </Typography>
                                 </React.Fragment>
                             }
                         />

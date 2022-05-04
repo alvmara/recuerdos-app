@@ -28,7 +28,9 @@ export default function MemoryCard({
     ownerId,
     images,
     date,
-    comments
+    comments,
+
+    updateMemory
 }) {
     const [expanded, setExpanded] = React.useState(false);
     const [comment, setComment] = React.useState('');
@@ -40,7 +42,9 @@ export default function MemoryCard({
     const postComment = (e) => {
         e.preventDefault();
 
-        createComment(id, comment);
+        createComment(id, comment)
+            .then((memoryChanges) => updateMemory(id, memoryChanges))
+            .then(() => setComment(''));
     }
 
     return (
