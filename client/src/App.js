@@ -8,16 +8,27 @@ import Profile from './views/user/Profile';
 import AuthPanel from './components/auth/AuthPanel';
 import MemoryFormModal from './components/memories/NewMemory/MemoryFormModal';
 import { useState } from 'react';
+import { useDispatch } from "react-redux";
 
 function App() {
+  const dispatch = useDispatch();
   const [newMemoryFormOpened, setNewMemoryFormOpened] = useState(false);
+
+  const addMemory = (memory) => {
+    dispatch({ type: 'ADD_MEMORY', memory });
+    setNewMemoryFormOpened(false);
+  }
 
   return (
     <div className="App">
       <NavigationBar onClickCreate={() => setNewMemoryFormOpened(true)}></NavigationBar>
 
 
-      <MemoryFormModal open={newMemoryFormOpened} onClose={() => setNewMemoryFormOpened(false) } />
+      <MemoryFormModal
+        open={newMemoryFormOpened}
+        onClose={() => setNewMemoryFormOpened(false)}
+        addMemory={(memory) => addMemory(memory)}
+      />
 
       <Container>
         <Routes>

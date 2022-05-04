@@ -7,8 +7,13 @@ import { createMemory, uploadImages } from '../../../api/memories';
 import MemoryImagesCarousel from '../MemoryCard/MemoryImagesCarousel';
 import { style, styleDropzone } from './styles';
 
+import { useSelector } from 'react-redux';
+
+
 
 function MemoryFormModal({ open, onClose, addMemory }) {
+    const token = useSelector(state => state.credentials.accessToken);
+
     const {
         acceptedFiles,
         getRootProps,
@@ -26,15 +31,15 @@ function MemoryFormModal({ open, onClose, addMemory }) {
     useEffect(() => {
         if (acceptedFiles.length === 0) return;
 
-        uploadImages(acceptedFiles).then(imageUrls => {
+        uploadImages(acceptedFiles, { token }).then(imageUrls => {
             setImages(imageUrls || []);
             updateMemory('images', imageUrls);
         });
-    }, [acceptedFiles]);
+    }, [acceptedFiles, token]);
 
 
     const persistMemory = () => {
-        createMemory(memory)
+        createMemory(memory, { token })
             .then(memory => addMemory(memory));
     };
 

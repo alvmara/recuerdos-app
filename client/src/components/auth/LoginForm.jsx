@@ -1,7 +1,26 @@
-import { Box, TextField } from '@mui/material';
+import { Send } from '@mui/icons-material';
+import { Box, Button, TextField } from '@mui/material';
 import React from 'react';
+import { loginUser } from '../../api/auth';
+
+import { useDispatch } from 'react-redux';
+
 
 function LoginForm() {
+    const dispatch = useDispatch();
+    const [emailOrUsername, setEmailOrUsername] = React.useState('');
+    const [password, setPassword] = React.useState('');
+
+    const login = (e) => {
+        e.preventDefault();
+
+        loginUser(emailOrUsername, password)
+            .then(({ user, accessToken }) => {
+                console.log({ user, accessToken });
+                dispatch({ type: 'SET_AUTH', user, accessToken });
+            });
+    }
+
     return (
         <Box
             component="form"
@@ -16,6 +35,8 @@ function LoginForm() {
                     required
                     id="outlined-required"
                     label="Email o nombre de usuario"
+                    value={emailOrUsername}
+                    onChange={(e) => setEmailOrUsername(e.target.value)}
                 />
             </div>
 
@@ -26,8 +47,14 @@ function LoginForm() {
                     type="password"
                     autoComplete="current-password"
                     variant="filled"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                 />
             </div>
+
+            <Button type="submit" onClick={(e) => login(e)} endIcon={<Send />}>
+                Login
+            </Button>
         </Box>
     )
 }

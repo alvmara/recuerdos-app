@@ -12,6 +12,8 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import { Box, Button, TextField } from '@mui/material';
 
+import { useSelector } from 'react-redux';
+
 import CommentsList from './CommentsList';
 import MemoryImagesCarousel from './MemoryImagesCarousel';
 import { createComment } from '../../../api/memories';
@@ -32,6 +34,7 @@ export default function MemoryCard({
 
     updateMemory
 }) {
+    const token = useSelector(state => state.credentials.accessToken);
     const [expanded, setExpanded] = React.useState(false);
     const [comment, setComment] = React.useState('');
 
@@ -42,7 +45,7 @@ export default function MemoryCard({
     const postComment = (e) => {
         e.preventDefault();
 
-        createComment(id, comment)
+        createComment(id, comment, { token })
             .then((memoryChanges) => updateMemory(id, memoryChanges))
             .then(() => setComment(''));
     }

@@ -1,6 +1,6 @@
- const credentialsReducer = (state = { user: null, accesToken: null }, action) => {
+ const credentialsReducer = (state = { user: null, accessToken: null }, action) => {
    switch (action.type) {
-      case 'SET_AUTH': return { ...state, user: action.user, accesToken: action.accesToken };
+      case 'SET_AUTH': return { ...state, user: action.user, accessToken: action.accessToken };
     default: return state
    }
 }

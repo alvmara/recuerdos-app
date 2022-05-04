@@ -1,10 +1,11 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 
 import AuthPanel from '../auth/AuthPanel';
+
+import { useSelector } from 'react-redux';
 
 const style = {
     position: 'absolute',
@@ -20,31 +21,26 @@ const style = {
 };
 
 export default function BasicModal() {
-    const [open, setOpen] = React.useState(true);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    // const [open, setOpen] = React.useState(true);
+    const open = useSelector(state => state.credentials.accessToken === null);
 
     return (
-        <div>
-            <Button onClick={handleOpen}>Open modal</Button>
-            <Modal
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-            >
-                <Box sx={style}>
-                    <Typography id="modal-modal-title" color="primary" variant="h2" component="h1">
-                        Recuerdos App
-                    </Typography>
+        <Modal
+            open={open}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+        >
+            <Box sx={style}>
+                <Typography id="modal-modal-title" color="primary" variant="h2" component="h1">
+                    Recuerdos App
+                </Typography>
 
-                    <Typography id="modal-modal-title" variant="h6" component="h2">
-                        Tu red social para inmortalizar recuerdos de tus viajes y compartilo con el mundo
-                    </Typography>
+                <Typography id="modal-modal-title" variant="h6" component="h2">
+                    Tu red social para inmortalizar recuerdos de tus viajes y compartilo con el mundo
+                </Typography>
 
-                    <AuthPanel />
-                </Box>
-            </Modal>
-        </div>
+                <AuthPanel />
+            </Box>
+        </Modal>
     );
 }

@@ -27,7 +27,8 @@ export class AuthService {
             const accessToken = this.jwtService.sign(JSON.stringify(userData));
 
             return {
-                accessToken
+                accessToken,
+                user: userData
             };
         });
     }
