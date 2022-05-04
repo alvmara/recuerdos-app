@@ -2,8 +2,8 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 interface IComment {
     id: string,
-    userName: string,
-    userPhoto: string,
+    ownerId: string,
+    ownerName: string,
     comment: string,
     date: string,
 }

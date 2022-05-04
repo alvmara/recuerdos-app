@@ -11,13 +11,19 @@ interface ListMemoriesConfig {
 
 @Injectable()
 export class MemoriesService {
-
     constructor(
         @InjectRepository(Memory)
         private readonly memoryRepository: Repository<Memory>,
         // private readonly memoriesSeeder: MemoriesSeederService
     ) {
         // this.memoriesSeeder.create();
+    }
+
+
+    findBy(params: any): Promise<Memory> {
+        return this.memoryRepository.findOne({
+            where: params
+        });
     }
 
     listMemories(config: ListMemoriesConfig) {
@@ -33,6 +39,10 @@ export class MemoriesService {
 
     createMemory(memory: Memory) {
         return this.memoryRepository.save(memory);
+    }
+
+    updateMemory(id: string, memory: Partial<Memory>) {
+        return this.memoryRepository.update(id, memory);
     }
 
 }

@@ -14,12 +14,13 @@ import { Box, Button, TextField } from '@mui/material';
 
 import CommentsList from './CommentsList';
 import MemoryImagesCarousel from './MemoryImagesCarousel';
+import { createComment } from '../../../api/memories';
 
 // interface ExpandMoreProps extends IconButtonProps {
 //     expand: boolean;
 // }
 
-export default function RecipeReviewCard({
+export default function MemoryCard({
     id,
     title,
     description,
@@ -30,10 +31,17 @@ export default function RecipeReviewCard({
     comments
 }) {
     const [expanded, setExpanded] = React.useState(false);
+    const [comment, setComment] = React.useState('');
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
+
+    const postComment = (e) => {
+        e.preventDefault();
+
+        createComment(id, comment);
+    }
 
     return (
         <Card sx={{ maxWidth: '100%' }}>
@@ -67,7 +75,7 @@ export default function RecipeReviewCard({
 
                 <Box sx={{ flexGrow: 1 }}></Box>
 
-                <Button onClick={() => handleExpandClick()}>
+                <Button disabled={comments.length === 0} onClick={() => handleExpandClick()}>
                     Ver comentarios
                 </Button>
             </CardActions>
@@ -79,9 +87,9 @@ export default function RecipeReviewCard({
                 </CardContent>
             </Collapse>
 
-            <Box sx={{ paddingInline: '20px', paddingBottom: '8px' }}>
-                <TextField id="standard-basic" label="Escribe tu comentario" variant="standard" sx={{ width: '100%' }} />
+            <Box component="form" onSubmit={(e) => postComment(e)} sx={{ paddingInline: '20px', paddingBottom: '8px' }}>
+                <TextField value={comment} onChange={(e) => setComment(e.target.value)} id="standard-basic" label="Escribe tu comentario" variant="standard" sx={{ width: '100%' }} />
             </Box>
-        </Card>
+        </Card >
     );
 }

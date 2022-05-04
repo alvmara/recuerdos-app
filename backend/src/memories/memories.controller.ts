@@ -68,6 +68,24 @@ export class MemoriesController {
     getMemoryImage(@Param('imgpath') image, @Res() res) {
         return res.sendFile(image, { root: './files' });
     }
-    Testing
+
+    @Post(':id/comment')
+    @UseGuards(JwtAuthGuard)
+    async commentMemory(@Param('id') id, @Body() { comment }, @Req() request) {
+        const user: User = request.user;
+
+        const memory = await this.memoryService.findBy({ id });
+
+        const commentObject = {} as Memory['comments'][number];
+
+        commentObject.comment = comment;
+        commentObject.ownerId = user.id;
+        commentObject.ownerName = user.userName;
+        commentObject.date = new Date().toISOString();
+
+        memory.comments.push(commentObject);
+
+        return this.memoryService.updateMemory(memory.id, { comments: memory.comments });
+    }
 }
 

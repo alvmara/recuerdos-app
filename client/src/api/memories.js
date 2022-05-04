@@ -3,7 +3,7 @@ const token = 'eyJhbGciOiJIUzI1NiJ9.eyJpZCI6ImY0ODNjMTA2LTdkNmEtNDBjYi1hYjA4LTJk
 
 
 export const listMemories = (page = 1) => {
-    return fetch(`http://localhost:3000/memories?_page=${page}`).then(res => res.json());
+    return fetch(`http://localhost:3000/memories?_page=${page}`).then(res => res.json()).catch(console.error);
 }
 
 export const uploadImages = (images) => {
@@ -18,7 +18,7 @@ export const uploadImages = (images) => {
         method: 'POST',
         body: formData,
         headers: { 'Authorization': `Bearer ${token}` }
-    }).then(res => res.json());
+    }).then(res => res.json()).catch(console.error);
 }
 
 
@@ -27,5 +27,15 @@ export const createMemory = (memory) => {
         method: 'POST',
         body: JSON.stringify(memory),
         headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }
-    }).then(res => res.json());  
+    }).then(res => res.json()).catch(console.error);  
 };
+
+
+export const createComment = (memoryId, comment) => {
+    return fetch(`http://localhost:3000/memories/${memoryId}/comment`, {
+        method: 'POST',
+        body: JSON.stringify({ comment }),
+        headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }
+    }).then(res => res.json()).catch(console.error);
+}
+
