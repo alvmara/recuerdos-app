@@ -16,7 +16,6 @@ function LoginForm() {
 
         loginUser(emailOrUsername, password)
             .then(({ user, accessToken }) => {
-                console.log({ user, accessToken });
                 dispatch({ type: 'SET_AUTH', user, accessToken });
             });
     }

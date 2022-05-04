@@ -26,8 +26,6 @@ export class MemoriesController {
     createMemory(@Req() request, @Body() memory: Partial<Memory>) {
         const user: User = request.user;
 
-        console.log(request.user);
-
         memory.ownerId = user.id;
         memory.ownerName = user.userName;
         memory.date = new Date().toISOString();

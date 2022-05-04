@@ -9,7 +9,9 @@ import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
 import { AddCircle } from '@mui/icons-material';
 import { useSelector } from 'react-redux';
-import debounce from 'lodash/debounce';
+import { search } from '../../api/memories';
+import { useDebounce } from 'usehooks-ts';
+import { useDispatch } from 'react-redux';
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -55,10 +57,19 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 // El componente NavigationBar es una barra de navegación que se muestra en todas las páginas
 export default function PrimarySearchAppBar({ onClickCreate }) {
     const isLoggedIn = useSelector(state => state.credentials.accessToken !== null);
+    const token = useSelector(state => state.credentials.accessToken);
+    const [searchText, setSearchText] = React.useState('');
+    const searchTextDebounced = useDebounce(searchText, 500);
+    const dispatch = useDispatch();
 
-    const searchMemories = React.useCallback(debounce(() => {
+    React.useEffect(() => {
+        if (searchText === '') return;
+        
         console.log('searching');
-    }, 400));
+
+        search({ searchText }, { token })
+            .then(memories => dispatch({ type: 'SET_SEARCHED_MEMORIES', memories }))
+    }, [searchTextDebounced]);
 
     return (
         <Box sx={{ flexGrow: 1 }}>
@@ -79,7 +90,7 @@ export default function PrimarySearchAppBar({ onClickCreate }) {
                         Recuerdos App
                     </Typography>
 
-                    <Search onChange={searchMemories}>
+                    <Search value={searchText} onChange={(e) => setSearchText(e.target.value)} >
                         <SearchIconWrapper>
                             <SearchIcon />
                         </SearchIconWrapper>

@@ -10,7 +10,10 @@ import { listMemories } from '../../api/memories';
 import { useSelector, useDispatch } from "react-redux";
 
 export default function BasicGrid({ theme }) {
-    const memories = useSelector(state => state.memories.memories);
+    const memories = useSelector(({ memories: { memories, searchedMemories } }) =>
+        searchedMemories.length > 0 ? searchedMemories : memories
+    );
+
     const dispatch = useDispatch();
 
     const updateMemory = (id, changes) => {

@@ -40,7 +40,6 @@ export class MemoriesSeederService {
     ) { }
 
     create(): Array<Promise<Memory>> {
-        console.log(getMemories());
         return getMemories().map(async (memory) => this.memoriesRepository.save(memory));
     }
 }
