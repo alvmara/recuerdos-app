@@ -17,9 +17,16 @@ export default function BasicGrid({ theme }) {
         const foundMemory = memories.find(memory => memory.id === id);
         const updatedMemory = { ...foundMemory, ...changes };
 
+        const index = memories.findIndex(memory => memory.id === id);
+
+        const updatedMemories = memories.slice();
+
+        updatedMemories.splice(index, 1, updatedMemory);
+
         dispatch({
             type: 'SET_MEMORIES',
-            memories: memories.filter(memory => memory.id !== id).concat(updatedMemory)
+            // TODO: Revisar
+            memories: updatedMemories
         });
     }
 

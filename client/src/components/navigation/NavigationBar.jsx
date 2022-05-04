@@ -12,6 +12,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import { AddCircle } from '@mui/icons-material';
+import { useSelector } from 'react-redux';
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -56,6 +57,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 // El componente NavigationBar es una barra de navegación que se muestra en todas las páginas
 export default function PrimarySearchAppBar({ onClickCreate }) {
+    const isLoggedIn = useSelector(state => state.credentials.accessToken !== null);
+
     // Controlar estado de los menús
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
@@ -140,9 +143,12 @@ export default function PrimarySearchAppBar({ onClickCreate }) {
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static">
                 <Toolbar>
-                    <IconButton onClick={() => onClickCreate()}>
-                        <AddCircle />
-                    </IconButton>
+                    {
+                        isLoggedIn && <IconButton onClick={() => onClickCreate()}>
+                            <AddCircle />
+                        </IconButton>
+
+                    }
 
                     <Typography
                         variant="h6"
@@ -166,33 +172,37 @@ export default function PrimarySearchAppBar({ onClickCreate }) {
                     <Box sx={{ flexGrow: 1 }} />
 
                     {/* Parte derecha versión desktop  */}
-                    <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-                        <IconButton
-                            size="large"
-                            edge="end"
-                            aria-label="account of current user"
-                            aria-controls={menuId}
-                            aria-haspopup="true"
-                            onClick={handleProfileMenuOpen}
-                            color="inherit"
-                        >
-                            <AccountCircle />
-                        </IconButton>
-                    </Box>
+                    {
+                        isLoggedIn && <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+                            <IconButton
+                                size="large"
+                                edge="end"
+                                aria-label="account of current user"
+                                aria-controls={menuId}
+                                aria-haspopup="true"
+                                onClick={handleProfileMenuOpen}
+                                color="inherit"
+                            >
+                                <AccountCircle />
+                            </IconButton>
+                        </Box>
+                    }
 
                     {/* Parte derecha versión mobile  */}
-                    <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
-                        <IconButton
-                            size="large"
-                            aria-label="show more"
-                            aria-controls={mobileMenuId}
-                            aria-haspopup="true"
-                            onClick={handleMobileMenuOpen}
-                            color="inherit"
-                        >
-                            <MoreIcon />
-                        </IconButton>
-                    </Box>
+                    {
+                        isLoggedIn && <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
+                            <IconButton
+                                size="large"
+                                aria-label="show more"
+                                aria-controls={mobileMenuId}
+                                aria-haspopup="true"
+                                onClick={handleMobileMenuOpen}
+                                color="inherit"
+                            >
+                                <MoreIcon />
+                            </IconButton>
+                        </Box>
+                    }
                 </Toolbar>
             </AppBar>
 
