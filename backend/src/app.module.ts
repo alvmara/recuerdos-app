@@ -15,13 +15,9 @@ console.log('ENV', process.env);
 @Module({
   imports: [
     ConfigModule.forRoot(),
+
     TypeOrmModule.forRoot({
-      type: process.env.TYPE as any || 'postgres',
-      host: process.env.DATABASE_HOST as any || 'database',
-      port: process.env.DATABASE_PORT as any || 5432,
-      username: process.env.DATABASE_USERNAME as any || 'postgres',
-      password: process.env.DATABASE_PASSWORD as any || 'postgres',
-      database: process.env.DATABASE_NAME as any || 'test',
+      connectString: process.env.DATABASE_URL,
       entities: ["dist/**/*.entity{.ts,.js}"],
       synchronize: true,
     }),
