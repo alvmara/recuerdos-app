@@ -24,7 +24,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 
         return {
           type: 'postgres',
-          ssl: true,
+          ssl: { rejectUnauthorized: false },
           url: configService.get('DATABASE_URL'),
           entities: ["dist/**/*.entity{.ts,.js}"],
           synchronize: true
