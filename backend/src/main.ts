@@ -8,7 +8,9 @@ async function bootstrap() {
 
   app.enableCors();
 
-  await app.listen(8080);
+  console.log('server port', process.env.SERVER_PORT);
+
+  await app.listen(process.env.SERVER_PORT || 8080);
 }
 
 bootstrap();

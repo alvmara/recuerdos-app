@@ -6,7 +6,6 @@ import { MemoriesService } from './memories.service';
 
 import { diskStorage } from 'multer';
 import { extname } from 'path';
-import { request } from 'http';
 import { User } from 'src/database/entities/user.entity';
 
 @Controller('memories')
@@ -60,7 +59,7 @@ export class MemoriesController {
         })
     )
     async uploadedFile(@UploadedFiles() files) {
-        return files.map(file => `http://localhost:8082/memories/uploaded/${file.filename}`);
+        return files.map(file => `/memories/uploaded/${file.filename}`);
     }
 
 
