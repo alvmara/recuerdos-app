@@ -8,18 +8,28 @@ import { MemoriesModule } from './memories/memories.module';
 import { UsersModule } from './users/users.module';
 import { MulterModule } from '@nestjs/platform-express';
 import { UserLikesModule } from './userLikes/userLikes.module';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
-console.log('ENV', process.env);
+// console.log('ENV', process.env.DATABASE_URL);
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
 
-    TypeOrmModule.forRoot({
-      connectString: process.env.DATABASE_URL,
-      entities: ["dist/**/*.entity{.ts,.js}"],
-      synchronize: true,
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService) => {
+
+        console.log(configService, configService.get('DATABASE_URL'));
+
+        return {
+          type: 'postgres',
+          url: configService.get('DATABASE_URL'),
+          entities: ["dist/**/*.entity{.ts,.js}"],
+          synchronize: true,
+        }
+      },
+      inject: [ConfigService],
     }),
 
     MulterModule.register({
