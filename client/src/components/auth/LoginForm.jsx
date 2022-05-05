@@ -4,6 +4,7 @@ import React from 'react';
 import { loginUser } from '../../api/auth';
 
 import { useDispatch } from 'react-redux';
+import { getMemoriesLiked } from '../../api/memoryUserLikes';
 
 
 function LoginForm() {
@@ -15,8 +16,12 @@ function LoginForm() {
         e.preventDefault();
 
         loginUser(emailOrUsername, password)
-            .then(({ user, accessToken }) => {
+            .then(async ({ user, accessToken }) => {
                 dispatch({ type: 'SET_AUTH', user, accessToken });
+
+                const memoryIds = await getMemoriesLiked({ token: accessToken });
+
+                dispatch({ type: 'SET_MEMORIES_LIKED', memoryIds });
             });
     }
 

@@ -20,4 +20,10 @@ export class UserLikesService {
     unlikeMemory(params: { userId: string; memoryId: string; }) {
         return this.userLikesRepository.delete(params);
     }
+
+    async getUserLikes(userId: string) {
+        const userLikes = await this.userLikesRepository.find({ where: { userId } });
+
+        return userLikes.map(({ memoryId }) => memoryId);
+    }
 }

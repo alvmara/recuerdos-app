@@ -9,14 +9,14 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { red } from '@mui/material/colors';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import ShareIcon from '@mui/icons-material/Share';
 import { Box, Button, TextField } from '@mui/material';
 
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import CommentsList from './CommentsList';
 import MemoryImagesCarousel from './MemoryImagesCarousel';
 import { createComment } from '../../../api/memories';
+import { createLike, deleteLike } from '../../../api/memoryUserLikes';
 
 // interface ExpandMoreProps extends IconButtonProps {
 //     expand: boolean;
@@ -34,13 +34,26 @@ export default function MemoryCard({
 
     updateMemory
 }) {
+    const isMemoryLiked = useSelector(state => state.userLikes.memoriesLiked.includes(id));
     const token = useSelector(state => state.credentials.accessToken);
+    const isLoggedIn = token !== null;
+
     const [expanded, setExpanded] = React.useState(false);
     const [comment, setComment] = React.useState('');
+
+    const dispatch = useDispatch();
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
+
+    const toggleLikeMemory = () => {
+        const promise = isMemoryLiked ? deleteLike(id, { token }) : createLike(id, { token });
+
+        promise.then(() => {
+            dispatch({ type: 'TOGGLE_MEMORY_LIKE', memoryId: id });
+        })
+    }
 
     const postComment = (e) => {
         e.preventDefault();
@@ -73,12 +86,14 @@ export default function MemoryCard({
             </CardContent>
 
             <CardActions disableSpacing>
-                <IconButton aria-label="add to favorites">
-                    <FavoriteIcon />
-                </IconButton>
-                <IconButton aria-label="share">
-                    <ShareIcon />
-                </IconButton>
+                {isLoggedIn &&
+                    <IconButton
+                        onClick={toggleLikeMemory}
+                        sx={{ color: isMemoryLiked ? red['400'] : '' }}
+                        aria-label="add to favorites">
+                        <FavoriteIcon />
+                    </IconButton>
+                }
 
                 <Box sx={{ flexGrow: 1 }}></Box>
 

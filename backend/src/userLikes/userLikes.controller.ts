@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 import { UserLikesService } from './userLikes.service';
 
@@ -25,5 +25,14 @@ export class UserLikesController {
         const { id: userId } = user;
 
         return this.userLikesService.unlikeMemory({ userId, memoryId });
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Get('getUserLikes')
+    getUserLikes(@Req() req) {
+        const { user } = req;
+        const { id: userId } = user;
+
+        return this.userLikesService.getUserLikes(userId);
     }
 }
