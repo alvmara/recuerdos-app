@@ -1,5 +1,5 @@
 export const loginUser = (emailOrUsername, password) => {
-    return fetch('http://localhost:3000/auth/login', {
+    return fetch('http://localhost:8082/auth/login', {
         method: 'POST',
         body: JSON.stringify({ emailOrUsername, password }),
         headers: {
@@ -11,7 +11,7 @@ export const loginUser = (emailOrUsername, password) => {
 }
 
 export const registerUser = ({ email, userName, password }) => {
-    return fetch('http://localhost:3000/auth/register', {
+    return fetch('http://localhost:8082/auth/register', {
         method: 'POST',
         body: JSON.stringify({ email, userName, password }),
         headers: {

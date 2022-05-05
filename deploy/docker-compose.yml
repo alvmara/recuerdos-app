@@ -7,8 +7,8 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=postgres
-    ports:
-      - 5432:5432
+    volumes:
+      - ./docker-entrypoint-initdb.d/init-user-db.sh:/docker-entrypoint-initdb.d/init-user-db.sh
     restart: always
 
   # Servicio de aplicación frontend
@@ -18,20 +18,19 @@ services:
       - 80:80
 
   # Servicio de aplicación backend
-  # backend:
-  #   image: recuerdos-app-backend:1.0
-  #   ports:
-  #     - 8080:8080
-
+  backend:
+    image: recuerdos-app-backend:1.0
+    ports:
+      - 8082:8080
   # My grafana service
   # Panel de administración de grafana 
-  grafana:
-    image: grafana/grafana:7.1.5-ubuntu
-    ports:
-      - 9000:3000
-    volumes:
-      - grafana-data:/var/lib/grafana
-# Explicitly define the persistent volume for your data storage
-volumes:
-  grafana-data:
-    external: true
+  # grafana:
+  #   image: grafana/grafana:7.1.5-ubuntu
+  #   ports:
+  #     - 9000:3000
+  #   volumes:
+  #     - grafana-data:/var/lib/grafana
+  # Explicitly define the persistent volume for your data storage
+  # volumes:
+  #   grafana-data:
+  #     external: true

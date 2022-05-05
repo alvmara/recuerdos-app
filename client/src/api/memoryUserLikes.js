@@ -1,6 +1,6 @@
 
 export const getMemoriesLiked = ({ token }) => {
-    return fetch('http://localhost:3000/userLikes/getUserLikes', {
+    return fetch('http://localhost:8082/userLikes/getUserLikes', {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
@@ -9,7 +9,7 @@ export const getMemoriesLiked = ({ token }) => {
 }
 
 export const createLike = (memoryId, { token }) => {
-    return fetch('http://localhost:3000/userLikes/likeMemory', {
+    return fetch('http://localhost:8082/userLikes/likeMemory', {
         method: 'POST',
         body: JSON.stringify({ memoryId }),
         headers: {
@@ -20,7 +20,7 @@ export const createLike = (memoryId, { token }) => {
 }
 
 export const deleteLike = (memoryId, { token }) => {
-    return fetch('http://localhost:3000/userLikes/unlikeMemory', {
+    return fetch('http://localhost:8082/userLikes/unlikeMemory', {
         method: 'POST',
         body: JSON.stringify({ memoryId }),
         headers: {
