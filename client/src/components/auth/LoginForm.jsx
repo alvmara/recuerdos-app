@@ -11,12 +11,18 @@ function LoginForm() {
     const dispatch = useDispatch();
     const [emailOrUsername, setEmailOrUsername] = React.useState('');
     const [password, setPassword] = React.useState('');
+    const [error, setError] = React.useState(false);
 
     const login = (e) => {
         e.preventDefault();
 
         loginUser(emailOrUsername, password)
             .then(async ({ user, accessToken }) => {
+                if (!user) {
+                    setError(true);
+                    return;
+                }
+
                 dispatch({ type: 'SET_AUTH', user, accessToken });
 
                 const memoryIds = await getMemoriesLiked({ token: accessToken });
@@ -33,6 +39,7 @@ function LoginForm() {
             }}
             noValidate
             autoComplete="off"
+            error={error}
         >
             <div>
                 <TextField

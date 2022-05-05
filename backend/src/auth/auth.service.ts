@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { User } from 'src/database/entities/user.entity';
@@ -47,7 +47,12 @@ export class AuthService {
             password: registerData.password
         } as User;
 
-        const createdUser = this.userService.create(user);
+        let createdUser;
+        try {
+            createdUser = await this.userService.create(user);
+        } catch (error) {
+            throw new BadRequestException(error.message);
+        }
 
         const accessToken = this.jwtService.sign(JSON.stringify(createdUser));
 

@@ -7,7 +7,7 @@ export const loginUser = (emailOrUsername, password) => {
         }
     })
     .then(res => res.json())
-    .catch(console.error);
+    .catch(() => ({}));
 }
 
 export const registerUser = ({ email, userName, password }) => {
@@ -19,5 +19,5 @@ export const registerUser = ({ email, userName, password }) => {
         }
     })
     .then(res => res.json())
-    .catch(console.error);
+    .catch(() => ({}));
 }

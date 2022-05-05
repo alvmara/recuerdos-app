@@ -16,7 +16,9 @@ export const uploadImages = (images, { token }) => {
         method: 'POST',
         body: formData,
         headers: { 'Authorization': `Bearer ${token}` }
-    }).then(res => res.json()).catch(console.error);
+    }).then(res => res.json())
+        .then(images => images.map(image => `${process.env.REACT_APP_BACKEND_BASE_URL}${image}`))
+    .catch(console.error);
 }
 
 

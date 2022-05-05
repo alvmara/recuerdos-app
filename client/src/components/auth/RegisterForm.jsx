@@ -23,6 +23,10 @@ function RegisterForm() {
 
         registerUser({ email, userName, password })
             .then(({ accessToken, user }) => {
+                if (!user) {
+                    return;
+                }
+
                 dispatch({ type: 'SET_AUTH', payload: { accessToken, user } });
             });
     }

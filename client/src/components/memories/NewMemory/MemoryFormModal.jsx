@@ -37,10 +37,13 @@ function MemoryFormModal({ open, onClose, addMemory }) {
         });
     }, [acceptedFiles, token]);
 
-
     const persistMemory = () => {
         createMemory(memory, { token })
-            .then(memory => addMemory(memory));
+            .then(memory => addMemory(memory))
+            .then(() => {
+                setImages([]);
+                setMemory({});
+            });
     };
 
     return (
