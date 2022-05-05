@@ -6,13 +6,13 @@ import { useDropzone } from 'react-dropzone';
 import { createMemory, uploadImages } from '../../../api/memories';
 import MemoryImagesCarousel from '../MemoryCard/MemoryImagesCarousel';
 import { style, styleDropzone } from './styles';
-
 import { useSelector } from 'react-redux';
-
-
 
 function MemoryFormModal({ open, onClose, addMemory }) {
     const token = useSelector(state => state.credentials.accessToken);
+    const user = useSelector(state => state.credentials.user);
+
+    const { userName = '' } = user || {};
 
     const {
         acceptedFiles,
@@ -23,8 +23,9 @@ function MemoryFormModal({ open, onClose, addMemory }) {
         isDragReject
     } = useDropzone({ accept: { 'image/*': [] } });
 
+
     const [images, setImages] = React.useState([]);
-    const [memory, setMemory] = React.useState({});
+    const [memory, setMemory] = React.useState({ title: '', description: '' });
 
     const updateMemory = useCallback((prop, value) => setMemory({ ...memory, [prop]: value }), [setMemory, memory]);
 
@@ -59,7 +60,7 @@ function MemoryFormModal({ open, onClose, addMemory }) {
                     <CardHeader
                         avatar={
                             <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                                {'TODOOOOO'.charAt(0).toUpperCase()}
+                                {userName.charAt(0).toUpperCase()}
                             </Avatar>
                         }
                         title={

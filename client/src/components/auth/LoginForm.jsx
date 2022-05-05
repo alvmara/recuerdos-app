@@ -1,6 +1,6 @@
 import { Send } from '@mui/icons-material';
 import { Box, Button, TextField } from '@mui/material';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { loginUser } from '../../api/auth';
 
 import { useDispatch } from 'react-redux';
@@ -43,6 +43,7 @@ function LoginForm() {
         >
             <div>
                 <TextField
+                    error={error}
                     required
                     id="outlined-required"
                     label="Email o nombre de usuario"
@@ -53,6 +54,7 @@ function LoginForm() {
 
             <div>
                 <TextField
+                    error={error}
                     id="filled-password-input"
                     label="Password"
                     type="password"

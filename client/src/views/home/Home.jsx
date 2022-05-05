@@ -4,15 +4,20 @@ import Grid from '@mui/material/Grid';
 import MemoryCard from '../../components/memories/MemoryCard/MemoryCard';
 import WelcomeModal from '../../components/navigation/WelcomeModal';
 
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { listMemories } from '../../api/memories';
 
 import { useSelector, useDispatch } from "react-redux";
+import NoData from '../../components/ui/NoData';
 
 export default function BasicGrid({ theme }) {
     const memories = useSelector(({ memories: { memories, searchedMemories } }) =>
-        searchedMemories.length > 0 ? searchedMemories : memories
+        searchedMemories !== null ? searchedMemories : memories
     );
+
+    const noData = useSelector((state) =>
+        state.memories.searchedMemories !== null &&
+        state.memories.searchedMemories.length === 0);
 
     const dispatch = useDispatch();
 
@@ -37,6 +42,20 @@ export default function BasicGrid({ theme }) {
             .then((memories) => dispatch({ type: 'SET_MEMORIES', memories }))
             .catch(console.error);
     }, [dispatch]);
+
+    if (noData) {
+        return (
+            <Box sx={{ textAlign: 'center', padding: '1.4rem' }}>
+                <Typography variant='h4'>
+                    No hay recuerdos para mostrar
+                </Typography>
+
+                <Box>
+                    <NoData />
+                </Box>
+            </Box>
+        )
+    }
 
     return (
         <Box sx={{ paddingTop: '20px' }}>

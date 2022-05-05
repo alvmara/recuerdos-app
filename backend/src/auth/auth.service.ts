@@ -22,7 +22,9 @@ export class AuthService {
 
         if (!user) return null;
 
-        return bcrypt.compare(password, user.password) ? user : null;
+        console.log('compareing', password, user.password, bcrypt.compare(password, user.password));
+
+        return (await bcrypt.compare(password, user.password)) ? user : null;
     }
 
     public async login(emailOrUsername: string, password: string): Promise<any> {

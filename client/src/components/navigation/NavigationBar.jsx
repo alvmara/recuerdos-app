@@ -12,6 +12,7 @@ import { useSelector } from 'react-redux';
 import { search } from '../../api/memories';
 import { useDebounce } from 'usehooks-ts';
 import { useDispatch } from 'react-redux';
+import { Button } from '@mui/material';
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -62,9 +63,14 @@ export default function PrimarySearchAppBar({ onClickCreate }) {
     const searchTextDebounced = useDebounce(searchText, 500);
     const dispatch = useDispatch();
 
+    const logout = () => dispatch({ type: 'LOGOUT' });
+
     React.useEffect(() => {
-        if (searchText === '') return;
-        
+        if (searchText === '') {
+            dispatch({ type: 'SET_SEARCHED_MEMORIES', memories: null })
+            return;
+        }
+
         console.log('searching');
 
         search({ searchText }, { token })
@@ -99,6 +105,10 @@ export default function PrimarySearchAppBar({ onClickCreate }) {
                             inputProps={{ 'aria-label': 'search' }}
                         />
                     </Search>
+
+                    <Box sx={{ flexGrow: 1 }} />
+
+                    {isLoggedIn && <Button variant='outlined' color='error' onClick={logout}>Logout</Button>}
                 </Toolbar>
             </AppBar>
         </Box>

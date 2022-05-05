@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 function RegisterForm() {
     const [formData, setFormData] = useState({});
     const [repeatPassword, setRepeatPassword] = useState('');
+    const [error, setError] = useState(false);
     const dispatch = useDispatch();
 
     const updateFormData = (key, value) => setFormData({ ...formData, [key]: value });
@@ -18,16 +19,18 @@ function RegisterForm() {
 
         if (password !== repeatPassword) {
             console.log('Las contraseñas no coinciden.');
+            setError(true);
             return;
         }
 
         registerUser({ email, userName, password })
             .then(({ accessToken, user }) => {
                 if (!user) {
+                    setError(true);
                     return;
                 }
 
-                dispatch({ type: 'SET_AUTH', payload: { accessToken, user } });
+                dispatch({ type: 'SET_AUTH', accessToken, user });
             });
     }
 
@@ -42,6 +45,7 @@ function RegisterForm() {
         >
             <div>
                 <TextField
+                    error={error}
                     required
                     id="outlined-required"
                     label="Nombre de usuario"
@@ -52,6 +56,7 @@ function RegisterForm() {
 
             <div>
                 <TextField
+                    error={error}
                     required
                     id="outlined-required"
                     label="Email"
@@ -62,6 +67,7 @@ function RegisterForm() {
 
             <div>
                 <TextField
+                    error={error}
                     id="filled-password-input"
                     label="Password"
                     type="password"
@@ -74,6 +80,7 @@ function RegisterForm() {
 
             <div>
                 <TextField
+                    error={error}
                     id="filled-password-input"
                     label="Repetir contraseña"
                     type="password"
