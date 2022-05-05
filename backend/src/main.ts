@@ -10,7 +10,7 @@ async function bootstrap() {
 
   console.log('server port', process.env.SERVER_PORT);
 
-  await app.listen(process.env.SERVER_PORT || 80);
+  await app.listen(process.env.SERVER_PORT || 8080);
 }
 
 bootstrap();
