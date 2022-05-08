@@ -41,6 +41,8 @@ Para el desarrollo del Backend se ha empleado el framework web [NestJS](https://
 
 #### Frontend
 
+Para el desarrollo del Frontend se ha utilazado React.
+
 Nombre                          | Versión | Descipción        |
 --------------------------------|---------|-------------------|
 **@emotion/react**              | 11.9.0  | Paquete de animaciones utilizado por MUI |
