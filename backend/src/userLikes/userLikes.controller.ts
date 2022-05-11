@@ -1,6 +1,9 @@
 import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
+import { User } from 'src/database/entities/user.entity';
 import { UserLikesService } from './userLikes.service';
+
+type RequestWithUser = Express.Request & { user: User }; // Type intersection en TypeScript
 
 @Controller('userLikes')
 export class UserLikesController {
@@ -8,10 +11,8 @@ export class UserLikesController {
 
     @UseGuards(JwtAuthGuard)
     @Post('likeMemory')
-    likeMemory(@Req() req, @Body() { memoryId }: { memoryId: string }) {
+    likeMemory(@Req() req: RequestWithUser, @Body() { memoryId }: { memoryId: string }) {
         const { user } = req;
-
-        console.log({ user });
 
         const { id: userId } = user;
 
@@ -20,7 +21,7 @@ export class UserLikesController {
 
     @UseGuards(JwtAuthGuard)
     @Post('unlikeMemory')
-    unlikeMemory(@Req() req, @Body() { memoryId }: { memoryId: string }) {
+    unlikeMemory(@Req() req: RequestWithUser, @Body() { memoryId }: { memoryId: string }) {
         const { user } = req;
         const { id: userId } = user;
 
@@ -29,7 +30,7 @@ export class UserLikesController {
 
     @UseGuards(JwtAuthGuard)
     @Get('getUserLikes')
-    getUserLikes(@Req() req) {
+    getUserLikes(@Req() req: RequestWithUser) {
         const { user } = req;
         const { id: userId } = user;
 

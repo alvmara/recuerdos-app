@@ -8,6 +8,8 @@ import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { User } from 'src/database/entities/user.entity';
 
+type RequestWithUser = Express.Request & { user: User }; // Type intersection en TypeScript
+
 @Controller('memories')
 export class MemoriesController {
 
@@ -22,7 +24,8 @@ export class MemoriesController {
 
     @UseGuards(JwtAuthGuard)
     @Post('create')
-    createMemory(@Req() request, @Body() memory: Partial<Memory>) {
+    createMemory(@Req() request: RequestWithUser, @Body() memory: Partial<Memory>) {
+
         const user: User = request.user;
 
         console.log({ user });
@@ -40,7 +43,7 @@ export class MemoriesController {
         FilesInterceptor('images', 20, {
             storage: diskStorage({
                 destination: './files',
-                filename: (req, file, callback) => {
+                filename: (req: Express.Request, file, callback) => {
                     const name = file.originalname.split('.')[0];
                     const fileExtName = extname(file.originalname);
                     const randomName = Array(4)
@@ -50,7 +53,7 @@ export class MemoriesController {
                     callback(null, `${name}-${randomName}${fileExtName}`);
                 }
             }),
-            fileFilter: (req, file, callback) => {
+            fileFilter: (req: Express.Request, file, callback) => {
                 if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
                     return callback(new Error('Only image files are allowed!'), false);
                 }
@@ -70,7 +73,7 @@ export class MemoriesController {
 
     @Post(':id/comment')
     @UseGuards(JwtAuthGuard)
-    async commentMemory(@Param('id') id, @Body() { comment }, @Req() request) {
+    async commentMemory(@Param('id') id, @Body() { comment }, @Req() request: RequestWithUser) {
         const user: User = request.user;
 
         const memory = await this.memoryService.findBy({ id });
