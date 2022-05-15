@@ -2,37 +2,45 @@ version: '3.9'
 services:
   # Servicio de base de datos
   database:
-    image: postgres:12.10-alpine
+    image: mongo:5
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=postgres
+      - MONGO_INITDB_DATABASE=test
+      - MONGO_INITDB_ROOT_USERNAME=mongo
+      - MONGO_INITDB_ROOT_PASSWORD=1234
     ports:
-      - 5432:5432
-    volumes:
-      - ./docker-entrypoint-initdb.d/init-user-db.sh:/docker-entrypoint-initdb.d/init-user-db.sh
+      - 27017:27017
     restart: always
+    # image: postgres:12.10-alpine
+    # environment:
+    #   - POSTGRES_USER=postgres
+    #   - POSTGRES_PASSWORD=postgres
+    #   - POSTGRES_DB=postgres
+    # ports:
+    #   - 5432:5432
+    # volumes:
+    #   - ./docker-entrypoint-initdb.d/init-user-db.sh:/docker-entrypoint-initdb.d/init-user-db.sh
+    # restart: always
 
-  # Servicio de aplicación frontend
-  frontend:
-    image: recuerdos-app-frontend:1.0
-    ports:
-      - 80:80
+    # Servicio de aplicación frontend
+    # frontend:
+    #   image: recuerdos-app-frontend:1.0
+    #   ports:
+    #     - 80:80
 
-  # Servicio de aplicación backend
-  backend:
-    image: recuerdos-app-backend:1.0
-    ports:
-      - 8080:8080
-  # My grafana service
-  # Panel de administración de grafana 
-  # grafana:
-  #   image: grafana/grafana:7.1.5-ubuntu
-  #   ports:
-  #     - 9000:3000
-  #   volumes:
-  #     - grafana-data:/var/lib/grafana
-  # Explicitly define the persistent volume for your data storage
-  # volumes:
-  #   grafana-data:
-  #     external: true
+    # Servicio de aplicación backend
+    # backend:
+    #   image: recuerdos-app-backend:1.0
+    #   ports:
+    #     - 8080:8080
+    # My grafana service
+    # Panel de administración de grafana 
+    # grafana:
+    #   image: grafana/grafana:7.1.5-ubuntu
+    #   ports:
+    #     - 9000:3000
+    #   volumes:
+    #     - grafana-data:/var/lib/grafana
+    # Explicitly define the persistent volume for your data storage
+    # volumes:
+    #   grafana-data:
+    #     external: true
