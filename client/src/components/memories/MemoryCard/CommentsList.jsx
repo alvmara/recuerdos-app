@@ -11,12 +11,12 @@ export default function AlignItemsList({ comments }) {
     return (
         <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
             {comments.map(({
-                id,
+                _id,
                 ownerName,
                 comment,
                 date,
             }, index) => <>
-                    <ListItem key={id} alignItems="flex-start">
+                    <ListItem key={_id} alignItems="flex-start">
                         <ListItemAvatar>
                             <Avatar alt={ownerName} >{ownerName.charAt(0).toUpperCase()}</Avatar>
                         </ListItemAvatar>

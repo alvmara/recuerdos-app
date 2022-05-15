@@ -22,10 +22,10 @@ export default function BasicGrid({ theme }) {
     const dispatch = useDispatch();
 
     const updateMemory = (id, changes) => {
-        const foundMemory = memories.find(memory => memory.id === id);
+        const foundMemory = memories.find(memory => memory._id === id);
         const updatedMemory = { ...foundMemory, ...changes };
 
-        const index = memories.findIndex(memory => memory.id === id);
+        const index = memories.findIndex(memory => memory._id === id);
 
         const updatedMemories = memories.slice();
 
@@ -61,7 +61,7 @@ export default function BasicGrid({ theme }) {
         <Box sx={{ paddingTop: '20px' }}>
             <Grid container spacing={2}>
                 {memories.map((memory) =>
-                    <Grid key={memory.id} item xs={12} md={4}>
+                    <Grid key={memory._id} item xs={12} md={4}>
                         <MemoryCard {...memory} updateMemory={updateMemory} />
                     </Grid>
                 )}

@@ -23,7 +23,7 @@ import { createLike, deleteLike } from '../../../api/memoryUserLikes';
 // }
 
 export default function MemoryCard({
-    id,
+    _id,
     title,
     description,
     ownerName,
@@ -34,7 +34,7 @@ export default function MemoryCard({
 
     updateMemory
 }) {
-    const isMemoryLiked = useSelector(state => state.userLikes.memoriesLiked.includes(id));
+    const isMemoryLiked = useSelector(state => state.userLikes.memoriesLiked.includes(_id));
     const token = useSelector(state => state.credentials.accessToken);
     const isLoggedIn = token !== null;
 
@@ -48,18 +48,18 @@ export default function MemoryCard({
     };
 
     const toggleLikeMemory = () => {
-        const promise = isMemoryLiked ? deleteLike(id, { token }) : createLike(id, { token });
+        const promise = isMemoryLiked ? deleteLike(_id, { token }) : createLike(_id, { token });
 
         promise.then(() => {
-            dispatch({ type: 'TOGGLE_MEMORY_LIKE', memoryId: id });
+            dispatch({ type: 'TOGGLE_MEMORY_LIKE', memoryId: _id });
         })
     }
 
     const postComment = (e) => {
         e.preventDefault();
 
-        createComment(id, comment, { token })
-            .then((memoryChanges) => updateMemory(id, memoryChanges))
+        createComment(_id, comment, { token })
+            .then((memoryChanges) => updateMemory(_id, memoryChanges))
             .then(() => setComment(''));
     }
 
